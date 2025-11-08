@@ -175,6 +175,8 @@ struct ProtectStruct
     u16 specialDmg;
     u8 physicalBattlerId;
     u8 specialBattlerId;
+    u8 contraryDefiant; // 1 - Contrary + Defiant triggered (do not repeat). 0 - abilities not triggered together yet
+    u8 contraryCompetitive; // 1 - Contrary + Competitive triggered (do not repeat). 0 - abilities not triggered together yet
 };
 
 // Cleared at the start of HandleAction_ActionFinished
@@ -193,6 +195,7 @@ struct SpecialStatus
     u8 stormDrainRedirected:1;
     // End of byte
     u8 switchInAbilityDone:1;
+    bool8 switchInTraitDone[MAX_MON_TRAITS];
     u8 switchInItemDone:1;
     u8 instructedChosenTarget:3;
     u8 berryReduced:1;
@@ -313,6 +316,7 @@ struct SimulatedDamage
 struct AiLogicData
 {
     u16 abilities[MAX_BATTLERS_COUNT];
+    u16 innates[MAX_BATTLERS_COUNT][MAX_MON_INNATES];
     u16 items[MAX_BATTLERS_COUNT];
     u16 holdEffects[MAX_BATTLERS_COUNT];
     u8 holdEffectParams[MAX_BATTLERS_COUNT];
@@ -631,6 +635,7 @@ struct BattleStruct
     u8 moneyMultiplierMove:1;
     u8 savedTurnActionNumber;
     u8 eventsBeforeFirstTurnState;
+    u8 switchInAbilitiesCounter;
     u8 faintedActionsState;
     u8 faintedActionsBattlerId;
     u8 scriptPartyIdx; // for printing the nickname
@@ -865,17 +870,19 @@ static inline bool32 IsBattleMoveStatus(u32 move)
 #define SET_STAT_BUFF_VALUE(n) ((((n) << 3) & 0xF8))
 
 #define SET_STATCHANGER(statId, stage, goesDown) (gBattleScripting.statChanger = (statId) + ((stage) << 3) + (goesDown << 7))
+#define SET_STATCHANGER_SECOND(statId, stage, goesDown) (gBattleScripting.statChanger2 = (statId) + ((stage) << 3) + (goesDown << 7))
+#define SET_STATCHANGER_THIRD(statId, stage, goesDown) (gBattleScripting.statChanger3 = (statId) + ((stage) << 3) + (goesDown << 7))
 #define SET_STATCHANGER2(dst, statId, stage, goesDown)(dst = (statId) + ((stage) << 3) + (goesDown << 7))
 
 // NOTE: The members of this struct have hard-coded offsets
 //       in include/constants/battle_script_commands.h
 struct BattleScripting
 {
-    s32 unused1;
+    s32 statChanger2;
     s32 bideDmg;
     u8 multihitString[6];
     bool8 expOnCatch;
-    u8 unused2;
+    u8 statChanger3;
     u8 animArg1;
     u8 animArg2;
     u16 savedStringId;
@@ -1050,6 +1057,10 @@ extern u16 gCalledMove;
 extern s32 gBideDmg[MAX_BATTLERS_COUNT];
 extern u16 gLastUsedItem;
 extern u16 gLastUsedAbility;
+extern u16 gDisplayAbility;
+extern u16 gDisplayAbility2;
+extern u8 gDisplayBattler;
+extern u16 gTraitStack[MAX_BATTLERS_COUNT * MAX_MON_TRAITS][2];
 extern u8 gBattlerAttacker;
 extern u8 gBattlerTarget;
 extern u8 gBattlerFainted;
@@ -1123,7 +1134,7 @@ extern u8 gHealthboxSpriteIds[MAX_BATTLERS_COUNT];
 extern u8 gMultiUsePlayerCursor;
 extern u8 gNumberOfMovesToChoose;
 extern bool8 gHasFetchedBall;
-extern u8 gLastUsedBall;
+extern u16 gLastUsedBall;
 extern u16 gLastThrownBall;
 extern u16 gBallToDisplay;
 extern bool8 gLastUsedBallMenuPresent;

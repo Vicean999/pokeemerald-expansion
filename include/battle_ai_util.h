@@ -11,6 +11,10 @@
 #define MIN_ROLL_PERCENTAGE DMG_ROLL_PERCENT_LO
 #define DMG_ROLL_PERCENTAGE ((MAX_ROLL_PERCENTAGE + MIN_ROLL_PERCENTAGE + 1) / 2) // Controls the damage roll the AI sees for the default roll. By default the 9th roll is seen
 
+#define BATTLER_NONE       0
+#define BATTLER_ABILITY    1
+#define BATTLER_INNATE     2
+
 enum DamageRollType
 {
     DMG_ROLL_LOWEST,
@@ -135,7 +139,7 @@ bool32 IsStatBoostingBerry(u32 item);
 bool32 CanKnockOffItem(u32 battler, u32 item);
 bool32 IsAbilityOfRating(u32 ability, s8 rating);
 bool32 AI_IsAbilityOnSide(u32 battlerId, u32 ability);
-bool32 AI_MoveMakesContact(u32 ability, enum ItemHoldEffect holdEffect, u32 move);
+bool32 AI_MoveMakesContact(u32 ability, enum ItemHoldEffect holdEffect, u32 move, u32 battlerAtk);
 bool32 ShouldUseZMove(u32 battlerAtk, u32 battlerDef, u32 chosenMove);
 void SetAIUsingGimmick(u32 battler, enum AIConsiderGimmick use);
 bool32 IsAIUsingGimmick(u32 battler);
@@ -169,7 +173,7 @@ bool32 HasMove(u32 battlerId, u32 move);
 bool32 HasOnlyMovesWithCategory(u32 battlerId, enum DamageCategory category, bool32 onlyOffensive);
 bool32 HasMoveWithCategory(u32 battler, enum DamageCategory category);
 bool32 HasMoveWithType(u32 battler, u32 type);
-bool32 HasMoveWithEffect(u32 battler, enum BattleMoveEffects moveEffect);
+bool32 HasMoveWithEffect(u32 battler, enum BattleMoveEffects effect);
 bool32 HasMoveWithAIEffect(u32 battler, u32 aiEffect);
 bool32 HasBattlerSideMoveWithEffect(u32 battler, u32 effect);
 bool32 HasBattlerSideMoveWithAIEffect(u32 battler, u32 effect);
@@ -235,8 +239,8 @@ bool32 IsWakeupTurn(u32 battler);
 bool32 AI_IsBattlerAsleepOrComatose(u32 battlerId);
 
 // ability logic
-bool32 IsMoxieTypeAbility(u32 ability);
-bool32 DoesAbilityRaiseStatsWhenLowered(u32 ability);
+bool32 IsMoxieTypeAbility(u32 battler, u32 ability);
+bool32 DoesAbilityRaiseStatsWhenLowered(u32 battler, u32 ability);
 bool32 ShouldTriggerAbility(u32 battlerAtk, u32 battlerDef, u32 ability);
 bool32 CanEffectChangeAbility(u32 battlerAtk, u32 battlerDef, u32 effect, struct AiLogicData *aiData);
 void AbilityChangeScore(u32 battlerAtk, u32 battlerDef, u32 effect, s32 *score, struct AiLogicData *aiData);

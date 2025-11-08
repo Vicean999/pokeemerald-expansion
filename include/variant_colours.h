@@ -97,11 +97,11 @@ static const struct SpeciesVariant gSpeciesVariants[NUM_SPECIES] = {
     },
     [SPECIES_POOCHYENA] = {
         PAL1(1, 5),
-        HCL1(0, 25, 5, FALSE),
+        HCL1(0, 25, 15, FALSE),
     },
     [SPECIES_MIGHTYENA] = {
         PAL1(1, 5),
-        HCL1(0, 25, 5, FALSE),
+        HCL1(0, 25, 15, FALSE),
     },
     [SPECIES_ZIGZAGOON] = {
         PAL1(5, 8),
@@ -109,7 +109,7 @@ static const struct SpeciesVariant gSpeciesVariants[NUM_SPECIES] = {
     },
     [SPECIES_LINOONE] = {
         PAL1(1, 3),
-        HCL1(10, 25, 5, FALSE),
+        HCL1(10, 25, 25, FALSE),
     },
     [SPECIES_WURMPLE] = {
         PAL1(1, 4),

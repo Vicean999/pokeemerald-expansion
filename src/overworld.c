@@ -1371,7 +1371,7 @@ void UpdateAmbientCry(s16 *state, u16 *delayCounter)
         for (i = 0; i < monsCount; i++)
         {
             if (!GetMonData(&gPlayerParty[i], MON_DATA_SANITY_IS_EGG)
-                && GetMonAbility(&gPlayerParty[0]) == ABILITY_SWARM)
+                && MonHasTrait(&gPlayerParty[0], ABILITY_SWARM, TRUE))
             {
                 divBy = 2;
                 break;
@@ -3564,7 +3564,7 @@ static u8 ReformatItemDescription(u16 item, u8 *dest)
 
 void ScriptShowItemDescription(struct ScriptContext *ctx)
 {
-    if (OW_SHOW_ITEM_DESCRIPTIONS == OW_ITEM_DESCRIPTIONS_OFF)
+    if (OW_SHOW_ITEM_DESCRIPTIONS == OW_ITEM_DESCRIPTIONS_ALWAYS)
     {
         (void) ScriptReadByte(ctx);
         return;
@@ -3613,7 +3613,7 @@ void ScriptShowItemDescription(struct ScriptContext *ctx)
 
 void ScriptHideItemDescription(struct ScriptContext *ctx)
 {
-    if (OW_SHOW_ITEM_DESCRIPTIONS == OW_ITEM_DESCRIPTIONS_OFF)
+    if (OW_SHOW_ITEM_DESCRIPTIONS == OW_ITEM_DESCRIPTIONS_ALWAYS)
         return;
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);

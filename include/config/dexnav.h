@@ -1,15 +1,15 @@
 #ifndef GUARD_CONFIG_DEXNAV_H
 #define GUARD_CONFIG_DEXNAV_H
 
-#define DEXNAV_ENABLED                FALSE  // Whether or not DexNav is enabled. If TRUE, flags/vars below must all be non-zero
+#define DEXNAV_ENABLED                TRUE   // Whether or not DexNav is enabled. If TRUE, flags/vars below must all be non-zero
 #define USE_DEXNAV_SEARCH_LEVELS      FALSE  /* WARNING: POSSIBLY EXCEEDS SAVEBLOCK SPACE! REQUIRES 1 BYTE PER SPECIES */
 
 // Flag/var defines
-#define DN_FLAG_SEARCHING             0 // Searching for mon
-#define DN_FLAG_DEXNAV_GET            0 // DexNav shows in start menu
-#define DN_FLAG_DETECTOR_MODE         0 // Allow player to find hidden mons
-#define DN_VAR_SPECIES                0 // Registered DexNav species
-#define DN_VAR_STEP_COUNTER           0 // Steps for finding hidden pokemon
+#define DN_FLAG_SEARCHING             TRUE // Searching for mon
+#define DN_FLAG_DEXNAV_GET            TRUE // DexNav shows in start menu
+#define DN_FLAG_DETECTOR_MODE         TRUE // Allow player to find hidden mons
+#define DN_VAR_SPECIES                TRUE // Registered DexNav species
+#define DN_VAR_STEP_COUNTER           TRUE   // Steps for finding hidden pokemon
 
 // Search parameters
 #define DEXNAV_TIMEOUT                  15  // 15 seconds is the time out. Max of 1092 seconds allowed
@@ -42,11 +42,11 @@
 #define SEARCHLEVEL100_ABILITYCHANCE    23
 // Chance of encountering held item
 #define SEARCHLEVEL0_ITEM               0
-#define SEARCHLEVEL5_ITEM               0
-#define SEARCHLEVEL10_ITEM              1
-#define SEARCHLEVEL25_ITEM              7
-#define SEARCHLEVEL50_ITEM              6
-#define SEARCHLEVEL100_ITEM             12
+#define SEARCHLEVEL5_ITEM               7
+#define SEARCHLEVEL10_ITEM              16
+#define SEARCHLEVEL25_ITEM              26
+#define SEARCHLEVEL50_ITEM              38
+#define SEARCHLEVEL100_ITEM             53
 // Chance of encountering one star potential
 #define SEARCHLEVEL0_ONESTAR            0
 #define SEARCHLEVEL5_ONESTAR            14
@@ -66,7 +66,7 @@
 #define SEARCHLEVEL5_THREESTAR          0
 #define SEARCHLEVEL10_THREESTAR         1
 #define SEARCHLEVEL25_THREESTAR         7
-#define SEARCHLEVEL50_THREESTAR         6
-#define SEARCHLEVEL100_THREESTAR        12
+#define SEARCHLEVEL50_THREESTAR         13
+#define SEARCHLEVEL100_THREESTAR        20
 
 #endif // GUARD_CONFIG_DEXNAV_H

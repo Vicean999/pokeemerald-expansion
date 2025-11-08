@@ -66,6 +66,9 @@
 #include "constants/union_room.h"
 #include "constants/weather.h"
 #include "wild_encounter.h"
+#if P_CUSTOM_COLOUR_VARIANTS
+#include "variant_colours.h"
+#endif
 
 #define FRIENDSHIP_EVO_THRESHOLD ((P_FRIENDSHIP_EVO_THRESHOLD >= GEN_8) ? 160 : 220)
 
@@ -83,6 +86,9 @@ static void EncryptBoxMon(struct BoxPokemon *boxMon);
 static void DecryptBoxMon(struct BoxPokemon *boxMon);
 static void Task_PlayMapChosenOrBattleBGM(u8 taskId);
 void TrySpecialOverworldEvo();
+#if P_CUSTOM_COLOUR_VARIANTS
+const u16 *GetMonSpritePalFromSpeciesInternal(u16 species, bool32 isShiny, bool32 isFemale);
+#endif
 
 EWRAM_DATA static u8 sLearningMoveTableID = 0;
 EWRAM_DATA u8 gPlayerPartyCount = 0;
@@ -5908,11 +5914,32 @@ const u16 *GetMonFrontSpritePal(struct Pokemon *mon)
 
 const u16 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, bool32 isShiny, u32 personality)
 {
-    return GetMonSpritePalFromSpecies(species, isShiny, IsPersonalityFemale(species, personality));
+    #if P_CUSTOM_COLOUR_VARIANTS
+        const u16 *base = GetMonSpritePalFromSpeciesInternal(species, isShiny, IsPersonalityFemale(species, personality));
+        static u16 sVariantPal[16];
+        CpuCopy16(base, sVariantPal, sizeof(sVariantPal));
+        ApplyMonSpeciesVariantToPaletteBuffer(species, isShiny, personality, sVariantPal);
+        return sVariantPal;
+    #else
+        return GetMonSpritePalFromSpecies(species, isShiny, IsPersonalityFemale(species, personality));
+    #endif
 }
 
 const u16 *GetMonSpritePalFromSpecies(u16 species, bool32 isShiny, bool32 isFemale)
 {
+#if P_CUSTOM_COLOUR_VARIANTS
+
+    DebugPrintf((char *)GetTrainerClassNameFromId(TRAINER_BATTLE_PARAM.opponentA));
+    const u16 *base = GetMonSpritePalFromSpeciesInternal(species, isShiny, isFemale);
+    static u16 sVariantPal[16];
+    CpuCopy16(base, sVariantPal, sizeof(sVariantPal));
+    ApplyMonSpeciesVariantToPaletteBuffer(species, isShiny, 0xDEADBEEF, sVariantPal);
+    return sVariantPal;
+}
+
+const u16 *GetMonSpritePalFromSpeciesInternal(u16 species, bool32 isShiny, bool32 isFemale)
+{
+#endif
     species = SanitizeSpeciesId(species);
 
     if (isShiny)

@@ -698,7 +698,9 @@ struct
 } static const sCursorOptions[MENU_FIELD_MOVES] =
 {
     [MENU_SUMMARY]         = {COMPOUND_STRING("SUMMARY"),         CursorCb_Summary},
+    [MENU_NICKNAME]        = {gText_Nickname,                     CursorCb_Nickname},
     [MENU_SWITCH]          = {COMPOUND_STRING("SWITCH"),          CursorCb_Switch},
+    [MENU_MOVES]           = {gText_Moves_Menu,                   CursorCb_Moves},
     [MENU_CANCEL1]         = {gText_Cancel2,                      CursorCb_Cancel1},
     [MENU_ITEM]            = {COMPOUND_STRING("ITEM"),            CursorCb_Item},
     [MENU_GIVE]            = {gMenuText_Give,                     CursorCb_Give},

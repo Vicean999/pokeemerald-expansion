@@ -27,6 +27,7 @@
 #include "task.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "party_menu.h"
 
 /*
  * Move relearner state machine
@@ -385,7 +386,15 @@ static void Task_WaitForFadeOut(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        SetMainCallback2(CB2_InitLearnMove);
+        if (FlagGet(FLAG_PARTY_MOVES))
+		{
+		    CB2_ReturnToPartyMenuFromSummaryScreen();
+			FlagClear(FLAG_PARTY_MOVES);
+		}
+		else
+		{
+		    SetMainCallback2(CB2_ReturnToField);
+		}
         gFieldCallback = FieldCB_ContinueScriptHandleMusic;
         DestroyTask(taskId);
     }
